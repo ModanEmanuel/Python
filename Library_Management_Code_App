@@ -1,0 +1,212 @@
+class ResursaBibliotecii:
+    # atributele clasei sunt disponibile pentru toate obiectele create cu clasa respectiva
+    id = 0  # atribut al clasei
+
+    def __init__(self, nume, autor, an):
+        self.nume = nume
+        self.autor = autor
+        self.an = an
+        self.id = 0  # TODO: de incrementat valoarea cu +1 pentru fiecare resursa/ o valoare random
+
+        ResursaBibliotecii.id += 1  # aceasta variabila de clasa va tine minte cate obiecte sunt create
+
+    def afisare_info(self):
+        attributes = self.__dict__
+        text = ""
+        for key, value in attributes.items():
+            text += f"{key}: {value}\n"
+        return text
+
+    def update_atribut(self, atribut, valoare_noua):
+        attributes = self.__dict__
+        if atribut in attributes:
+            setattr(self, atribut, valoare_noua)
+
+
+class Carte(ResursaBibliotecii):
+    def __init__(self, nume, autor, an, numar_pagini):
+        super().__init__(nume, autor, an)
+        self.numar_pagini = numar_pagini
+
+
+class CD(ResursaBibliotecii):
+    def __init__(self, nume, autor, an, durata):
+        super().__init__(nume, autor, an)
+        self.durata = durata
+
+
+class Revista(ResursaBibliotecii):
+    def __init__(self, nume, autor, an, issn):
+        super().__init__(nume, autor, an)
+        self.issn = issn
+
+
+class Biblioteca:
+    def __init__(self):
+        self.resurse = []
+        self.urmatorul_id = 1
+
+    def adauga_resursa(self, resursa):
+        resursa.id = self.urmatorul_id
+        self.resurse.append(resursa)
+        self.urmatorul_id += 1
+
+    def stergere_resursa(self, resursa_id):
+        for resursa in self.resurse:
+            if resursa.id == resursa_id:
+                self.resurse.remove(resursa)
+                return f"Resursa cu ID-ul {resursa_id} a fost stearsa"
+        return f"Resursa cu ID-ul {resursa_id} nu a fost gasita"
+
+    def cautare_resursa_dupa_nume(self, nume):
+        rezultate = []
+        for resursa in self.resurse:
+            if resursa.nume == nume:
+                rezultate.append(resursa)
+        return rezultate
+
+    def cautare_resursa_dupa_autor(self, autor):
+        rezultate = [resursa for resursa in self.resurse if resursa.autor == autor]
+        return rezultate
+
+    def cautare_resursa_dupa_id(self, resurse_id):
+        for resursa in self.resurse:
+            if resursa.id == resurse_id:
+                return resursa
+
+    def afisare_info(self):
+        text = ""
+        for resursa in self.resurse:
+            text += resursa.afisare_info()
+        return text
+
+
+carte1 = Carte(nume="Ion", autor="Liviu Rebreanu", an=1920, numar_pagini=320)
+carte2 = Carte(nume="Morometii", autor="Marin Preda", an=1945, numar_pagini=400)
+carte3 = Carte(nume="Ion", autor="Liviu Rebreanu", an=1920, numar_pagini=320)
+
+cd1 = CD(nume="Tom & Jerry", autor=" - ", an=1994, durata=120)
+cd2 = CD(nume="Titanic", autor="James Cameron", an=1998, durata=180)
+
+revista1 = Revista(nume="Integrame", autor="Mihai Frunza", an=2024, issn="2024/1")
+revista2 = Revista(nume="Vogue", autor=" - ", an=2024, issn="2024/2")
+
+biblioteca = Biblioteca()
+biblioteca.adauga_resursa(carte1)
+biblioteca.adauga_resursa(carte2)
+biblioteca.adauga_resursa(cd1)
+biblioteca.adauga_resursa(cd2)
+biblioteca.adauga_resursa(revista1)
+biblioteca.adauga_resursa(revista2)
+biblioteca.adauga_resursa(carte3)
+
+assert len(biblioteca.resurse) == 7
+
+# Assert-uri pentru carte1
+assert carte1.nume == "Ion"
+assert carte1.autor == "Liviu Rebreanu"
+assert carte1.an == 1920
+assert carte1.numar_pagini == 320
+assert carte1.id == 1
+assert "nume: Ion" in carte1.afisare_info()
+assert "autor: Liviu Rebreanu" in carte1.afisare_info()
+assert "an: 1920" in carte1.afisare_info()
+assert "numar_pagini: 320" in carte1.afisare_info()
+
+# Test update_atribut pentru carte1
+carte1.update_atribut(atribut="an", valoare_noua=1921)
+assert carte1.an == 1921
+
+# Assert-uri pentru carte2
+assert carte2.nume == "Morometii"
+assert carte2.autor == "Marin Preda"
+assert carte2.an == 1945
+assert carte2.numar_pagini == 400
+assert carte2.id == 2
+assert "nume: Morometii" in carte2.afisare_info()
+assert "autor: Marin Preda" in carte2.afisare_info()
+assert "an: 1945" in carte2.afisare_info()
+assert "numar_pagini: 400" in carte2.afisare_info()
+
+# Test update_atribut pentru carte2
+carte2.update_atribut(atribut="numar_pagini", valoare_noua=450)
+assert carte2.numar_pagini == 450
+
+# Assert-uri pentru cd1
+assert cd1.nume == "Tom & Jerry"
+assert cd1.autor == " - "
+assert cd1.an == 1994
+assert cd1.durata == 120
+assert cd1.id == 3
+assert "nume: Tom & Jerry" in cd1.afisare_info()
+#assert "autor: - " in cd1.afisare_info()
+assert "an: 1994" in cd1.afisare_info()
+assert "durata: 120" in cd1.afisare_info()
+
+# Test update_atribut pentru cd1
+cd1.update_atribut(atribut="durata", valoare_noua=130)
+assert cd1.durata == 130
+
+# Assert-uri pentru cd2
+assert cd2.nume == "Titanic"
+# assert cd2.autor == " - "
+assert cd2.an == 1998
+assert cd2.durata == 180
+assert cd2.id == 4
+assert "nume: Titanic" in cd2.afisare_info()
+#assert "autor: James Cameron " in cd2.afisare_info()
+assert "an: 1998" in cd2.afisare_info()
+assert "durata: 180" in cd2.afisare_info()
+
+# Test update_atribut pentru cd2
+cd2.update_atribut(atribut="an", valoare_noua=1999)
+assert cd2.an == 1999
+
+# Assert-uri pentru revista1
+assert revista1.nume == "Integrame"
+assert revista1.autor == "Mihai Frunza"
+assert revista1.an == 2024
+assert revista1.issn == "2024/1"
+assert revista1.id == 5
+assert "nume: Integrame" in revista1.afisare_info()
+assert "autor: Mihai Frunza" in revista1.afisare_info()
+assert "an: 2024" in revista1.afisare_info()
+assert "issn: 2024/1" in revista1.afisare_info()
+
+# Test update_atribut pentru revista1
+revista1.update_atribut(atribut="issn", valoare_noua="2024/3")
+assert revista1.issn == "2024/3"
+
+# Assert-uri pentru revista2
+assert revista2.nume == "Vogue"
+# assert revista2.autor == "-"
+assert revista2.an == 2024
+assert revista2.issn == "2024/2"
+assert revista2.id == 6
+assert "nume: Vogue" in revista2.afisare_info()
+# assert "autor: -" in revista2.afisare_info()
+assert "an: 2024" in revista2.afisare_info()
+assert "issn: 2024/2" in revista2.afisare_info()
+
+# Test update_atribut pentru revista2
+revista2.update_atribut(atribut="autor", valoare_noua="Anna Wintour")
+assert revista2.autor == "Anna Wintour"
+
+assert biblioteca.stergere_resursa(resursa_id=2) == "Resursa cu ID-ul 2 a fost stearsa"
+assert len(biblioteca.resurse) == 6
+
+assert biblioteca.stergere_resursa(resursa_id=100) == "Resursa cu ID-ul 100 nu a fost gasita"
+assert len(biblioteca.resurse) == 6
+
+assert len(biblioteca.cautare_resursa_dupa_nume(nume="Ion")) == 2
+assert len(biblioteca.cautare_resursa_dupa_nume(nume="Vogue")) == 1
+assert len(biblioteca.cautare_resursa_dupa_nume(nume="Pe aripile vantului")) == 0
+
+assert len(biblioteca.cautare_resursa_dupa_autor(autor="Liviu Rebreanu")) == 2
+assert len(biblioteca.cautare_resursa_dupa_autor(autor="Anna Wintour")) == 1
+assert len(biblioteca.cautare_resursa_dupa_autor(autor="Nichita Stanescu")) == 0
+
+rezultat = biblioteca.cautare_resursa_dupa_id(resurse_id=3)
+
+assert rezultat.nume == "Tom & Jerry"
+assert rezultat.autor == " - "
