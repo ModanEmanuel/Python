@@ -1,0 +1,23 @@
+n = 10
+numere = []
+for i in range(0, n+1):
+    numere.append(i)
+
+print(numere)
+# List comprehension :
+numere = [numar for numar in range(0, n+1)]
+print(numere)
+# Avantaje :
+# 1. Este mai rapid fata de modalitatea clasica
+# 2. Codul in sine ocupa mai putin spatiu in memoria calculatorului
+
+
+names = ["Andrei", "Andreea", "Marin", "Ion", "Ana"]
+# sa se genereze o lista care sa contina dimensiunea (numarul de litere) fiecarui nume
+nr_litere = []
+for name in names:
+    nr_litere.append(len(name))
+print(nr_litere)
+
+nr_litere = [len(name) for name in names]
+print(nr_litere)
