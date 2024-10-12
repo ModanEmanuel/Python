@@ -1,0 +1,17 @@
+def adauga_mozzarella(func):    #func = pizza_simpla
+    # func = reprezinta numele functiei pe care o vom decora
+    def inner():
+        pizza = func()
+        return f"{pizza} + mozarella"
+    return inner
+
+@adauga_mozzarella
+def pizza_simpla():
+    return "Pizza cu blat si sos de rosii"
+
+@adauga_mozzarella
+def pizza_complicata():
+    return "Pizza cu blat pufos si rosii si porumb"
+
+print(pizza_simpla())
+print(pizza_complicata())
