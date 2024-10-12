@@ -1,0 +1,36 @@
+class Dog: # super clasa
+    def __init__(self, name, age, weight):
+        self.name = name
+        self.age = age
+        self.weight = weight
+
+    def afisare_info(self):
+        return f"{self.name} are {self.age} ani si {self.weight} kg."
+
+class ServiceDog(Dog): # sub-clasa
+    def __init__(self,name, age, weight, handler):
+        super().__init__(name, age, weight)
+        self.handler = handler
+
+    def walk(self):
+        return f"{self.name} il ajuta pe {self.handler}."
+
+class PetDog(Dog):# sub-clasa
+    def __init__(self,name, age, weight, toy):
+        Dog.__init__(self,name, age, weight)
+        self.toy = toy
+    def play(self):
+        return f"{self.name} se joaca cu {self.toy}."
+
+dog1 = Dog(name="Fido", age=12, weight=10)
+dog2 = ServiceDog(name="Rex", age=5, weight=4, handler="Ion Marin")
+dog3 = PetDog(name="Toby", age=4, weight=7, toy="o minge")
+dog4 = dog2
+
+# operatorul "is" - se verifica identitatea obiectelor, nu si egalitatea valorilor acestora
+#                 - se verifica daca adresa din memorie este aceeasi pentru 2 obiecte
+
+print(dog1 is dog2) # False
+print(dog2 is not dog3) # True
+print(dog3 is dog4) # False
+print(dog4 is dog2) # True
