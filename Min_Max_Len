@@ -1,0 +1,5 @@
+numbers = [ 1, 2, 534, 2345, -315, 834, - 74573]
+print(max(numbers), "max")
+print(min(numbers), "min")
+print(max(numbers), "max")
+print(len(numbers), "len")
