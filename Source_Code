@@ -1,0 +1,200 @@
+class Membru:
+    def __init__(self, id, nume, rol, rata_orara):
+        self.id = id
+        self.nume = nume
+        self.rol = rol
+        self.rata_orara = rata_orara
+
+
+class Sarcina:
+    def __init__(self, id, descriere, estimare_ore, id_membru_asignat, cost=0):
+        self.id = id
+        self.descriere = descriere
+        self.estimare_ore = estimare_ore
+        self.id_membru_asignat = id_membru_asignat
+        self.cost = cost
+
+    @staticmethod
+    def calcul_cost(estimare_ore, rata_orara):
+        return estimare_ore * rata_orara
+
+
+class Proiect:
+    def __init__(self, nume, buget):
+        self.nume = nume
+        self.buget = buget
+        self.lista_membri = []
+        self.lista_sarcini = []
+
+    def adauga_membru(self, membru):
+        if self.cauta_membru_dupa_id(membru.id) is None:
+            self.lista_membri.append(membru)
+            self.actualizeaza_costuri()  # Recalculam costurile dupa adaugarea unui membru
+            return f"Membrul {membru.nume} a fost adaugat cu succes"
+        else:
+            return f"Membrul {membru.nume} face parte deja din echipa"
+
+    def sterge_membru(self, id_membru):
+        membru = self.cauta_membru_dupa_id(id_membru)
+        if membru:
+            # Stergem si sarcinile asociate cu acest membru
+            self.lista_sarcini = [s for s in self.lista_sarcini if s.id_membru_asignat != id_membru]
+            self.lista_membri.remove(membru)
+            self.actualizeaza_costuri()  # Recalculam costurile dupa stergerea unui membru si a sarcinilor sale
+            return f"Membrul cu ID-ul {id_membru} a fost scos din echipa"
+        else:
+            return f"Membrul nu a fost gasit"
+
+    def adauga_sarcina(self, sarcina):
+        sarcina_existenta = self.cauta_sarcina_dupa_id(sarcina.id)
+        if sarcina_existenta is None:
+            membru = self.cauta_membru_dupa_id(sarcina.id_membru_asignat)
+            if membru:
+                sarcina.cost = Sarcina.calcul_cost(sarcina.estimare_ore, membru.rata_orara)
+                self.lista_sarcini.append(sarcina)
+                self.actualizeaza_costuri()  # Recalculam costurile dupa adaugarea unei sarcini
+                return f"Sarcina '{sarcina.descriere}' a fost adaugata cu succes"
+            else:
+                return "Membrul pentru aceasta sarcina nu a fost gasit"
+        else:
+            return "ID-ul sarcinii exista deja"
+
+    def sterge_sarcina(self, id_sarcina):
+        sarcina = self.cauta_sarcina_dupa_id(id_sarcina)
+        if sarcina:
+            self.lista_sarcini.remove(sarcina)
+            self.actualizeaza_costuri()  # Recalculam costurile dupa stergerea unei sarcini
+            return f"Sarcina cu ID-ul {id_sarcina} a fost stearsa"
+        else:
+            return "Sarcina nu a fost gasita"
+
+    def cauta_membru_dupa_id(self, id_membru):
+        for membru in self.lista_membri:
+            if membru.id == id_membru:
+                return membru
+        return None
+
+    def cauta_sarcina_dupa_id(self, id_sarcina):
+        for sarcina in self.lista_sarcini:
+            if sarcina.id == id_sarcina:
+                return sarcina
+        return None
+
+    def actualizeaza_costuri(self):
+        """
+        Recalculeaza costurile pentru toate sarcinile ramase in proiect, bazate pe rata orara a membrilor asignati.
+        """
+        for sarcina in self.lista_sarcini:
+            membru = self.cauta_membru_dupa_id(sarcina.id_membru_asignat)
+            if membru:
+                sarcina.cost = Sarcina.calcul_cost(sarcina.estimare_ore, membru.rata_orara)
+
+    def calcul_cheltuieli(self):
+        return sum(sarcina.cost for sarcina in self.lista_sarcini)
+
+    def calcul_profit(self):
+        cheltuieli = self.calcul_cheltuieli()
+        profit = self.buget - cheltuieli
+        if profit > 0:
+            return profit
+        else:
+            return f"Proiectul nu este fezabil"
+
+
+    def afiseaza_membri(self):
+        membri_proiect = "\n".join([f"- ID: {membru.id}, Nume: {membru.nume}, Rol: {membru.rol}, Rata orară: {membru.rata_orara}"
+             for membru in self.lista_membri])
+        return f"\n{membri_proiect}\n"
+
+
+    def afiseaza_date(self):
+        numar_membri = len(self.lista_membri)
+        return f"Numele proiectului : {self.nume}\n" \
+                f"Bugetul proiectului : {self.buget}\n" \
+                f"Numar membri : {numar_membri}\n" \
+                f"Estimare de profit : {self.calcul_profit()}"
+
+if __name__ == "__main__":
+    # Test pentru scenariul cu 3 membri si 2 sarcini fiecare
+
+    # Cream instante de obiecte
+    proiect = Proiect("Proiect Test", 30000)
+
+    # Adaugam membri
+    membru1 = Membru(1, "Ion Popescu", "Dezvoltator", 50)
+    membru2 = Membru(2, "Ana Ionescu", "Manager", 70)
+    membru3 = Membru(3, "Mihai Georgescu", "Tester", 40)
+
+    assert proiect.adauga_membru(membru1) == "Membrul Ion Popescu a fost adaugat cu succes"
+    assert proiect.adauga_membru(membru2) == "Membrul Ana Ionescu a fost adaugat cu succes"
+    assert proiect.adauga_membru(membru3) == "Membrul Mihai Georgescu a fost adaugat cu succes"
+
+    # Verificam daca toti membrii au fost adaugati corect
+    assert proiect.cauta_membru_dupa_id(1) == membru1
+    assert proiect.cauta_membru_dupa_id(2) == membru2
+    assert proiect.cauta_membru_dupa_id(3) == membru3
+
+    # Adaugam sarcini pentru fiecare membru
+    sarcina1_membru1 = Sarcina(1, "Dezvoltare frontend", 20, 1)  # 20 ore pentru membrul 1 (50 lei/ora)
+    sarcina2_membru1 = Sarcina(2, "Dezvoltare backend", 15, 1)  # 15 ore pentru membrul 1 (50 lei/ora)
+
+    sarcina1_membru2 = Sarcina(3, "Planificare", 10, 2)  # 10 ore pentru membrul 2 (70 lei/ora)
+    sarcina2_membru2 = Sarcina(4, "Sedinte", 5, 2)  # 5 ore pentru membrul 2 (70 lei/ora)
+
+    sarcina1_membru3 = Sarcina(5, "Testare UI", 25, 3)  # 25 ore pentru membrul 3 (40 lei/ora)
+    sarcina2_membru3 = Sarcina(6, "Testare API", 30, 3)  # 30 ore pentru membrul 3 (40 lei/ora)
+
+    assert proiect.adauga_sarcina(sarcina1_membru1) == "Sarcina 'Dezvoltare frontend' a fost adaugata cu succes"
+    assert proiect.adauga_sarcina(sarcina2_membru1) == "Sarcina 'Dezvoltare backend' a fost adaugata cu succes"
+
+    assert proiect.adauga_sarcina(sarcina1_membru2) == "Sarcina 'Planificare' a fost adaugata cu succes"
+    assert proiect.adauga_sarcina(sarcina2_membru2) == "Sarcina 'Sedinte' a fost adaugata cu succes"
+
+    assert proiect.adauga_sarcina(sarcina1_membru3) == "Sarcina 'Testare UI' a fost adaugata cu succes"
+    assert proiect.adauga_sarcina(sarcina2_membru3) == "Sarcina 'Testare API' a fost adaugata cu succes"
+
+    # Verificam costurile pentru fiecare sarcina
+    assert sarcina1_membru1.cost == 20 * 50  # 1000 lei
+    assert sarcina2_membru1.cost == 15 * 50  # 750 lei
+
+    assert sarcina1_membru2.cost == 10 * 70  # 700 lei
+    assert sarcina2_membru2.cost == 5 * 70  # 350 lei
+
+    assert sarcina1_membru3.cost == 25 * 40  # 1000 lei
+    assert sarcina2_membru3.cost == 30 * 40  # 1200 lei
+
+    # Calculam cheltuielile totale
+    cheltuieli_totale = (1000 + 750 + 700 + 350 + 1000 + 1200)
+    assert proiect.calcul_cheltuieli() == cheltuieli_totale  # Cheltuieli totale = 5000 lei
+
+    # Calculam profitul
+    assert proiect.calcul_profit() == 30000 - cheltuieli_totale  # Profit = 25000 lei
+
+    # Verificam ca fiecare sarcina este inca prezenta in proiect
+    assert proiect.cauta_sarcina_dupa_id(1) == sarcina1_membru1
+    assert proiect.cauta_sarcina_dupa_id(2) == sarcina2_membru1
+    assert proiect.cauta_sarcina_dupa_id(3) == sarcina1_membru2
+    assert proiect.cauta_sarcina_dupa_id(4) == sarcina2_membru2
+    assert proiect.cauta_sarcina_dupa_id(5) == sarcina1_membru3
+    assert proiect.cauta_sarcina_dupa_id(6) == sarcina2_membru3
+
+    # Testam stergerea unei sarcini si recalcularea costurilor
+    assert proiect.sterge_sarcina(1) == "Sarcina cu ID-ul 1 a fost stearsa"  # Stergem sarcina 1 a membrului 1
+    cheltuieli_dupa_stergere = cheltuieli_totale - 1000  # Scadem costul sarcinii 1 (1000 lei)
+    assert proiect.calcul_cheltuieli() == cheltuieli_dupa_stergere
+
+    # Testam stergerea unui membru si recalcularea costurilor
+    assert proiect.sterge_membru(3) == "Membrul cu ID-ul 3 a fost scos din echipa"  # Stergem membrul 3 si sarcinile sale
+    cheltuieli_dupa_stergere_membru = cheltuieli_dupa_stergere - 1000 - 1200  # Scadem costurile sarcinilor membrului 3
+    assert proiect.calcul_cheltuieli() == cheltuieli_dupa_stergere_membru
+
+    # Verificam profitul dupa stergeri
+    assert proiect.calcul_profit() == 30000 - cheltuieli_dupa_stergere_membru
+
+    # Verificam afisarea datelor dupa
+    assert proiect.afiseaza_date() == "Numele proiectului : Proiect Test\n" \
+                                      "Bugetul proiectului : 30000\n" \
+                                      "Numar membri : 2\n" \
+                                      "Estimare de profit : 28200"
+
+    print("Toate testele au trecut cu succes !")
