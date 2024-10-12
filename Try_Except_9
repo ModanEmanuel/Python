@@ -1,0 +1,19 @@
+def valoare_cheie(dictionar, key):
+    #dictionar = {"a": 1, "b": 2, "c": 3}
+    #dictionar["b"] => 2
+    try:
+        if isinstance(dictionar, dict):
+            result = dictionar[key]
+        else:
+            result = "Dictionarul nu este valid"
+    except KeyError:
+        result = "Cheia nu exista in dictionar"
+    return result
+print(valoare_cheie({"a": 4, "b": 5}, "a"))
+print(valoare_cheie({"a": 6, "b": 7}, ""))
+
+assert valoare_cheie(dictionar={"a": 1, "b": 2, "c": 3}, key="b") == 2
+assert valoare_cheie(dictionar={"a": 4, "b": 5}, key="a") == 4
+assert valoare_cheie(dictionar={"a": 6, "b": 7}, key="") == "Cheia nu exista in dictionar"
+assert valoare_cheie(dictionar={}, key="test") == "Cheia nu exista in dictionar"
+assert valoare_cheie(dictionar=[1, 2, 3, 4], key=1) == "Dictionarul nu este valid"
