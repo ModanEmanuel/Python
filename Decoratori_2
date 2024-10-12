@@ -1,0 +1,34 @@
+import time
+
+
+
+def timing(function):
+    def inner(*args, **kwargs):
+        start_time = time.time()    # secundele care au trecut de la 1 ianuarie 1970 pana in prezent
+        result = function(*args, **kwargs)
+        end_time = time.time()
+        execution_time = end_time - start_time
+        file = open("logs_execution_time.txt", "a")
+        file.write(f"Timpul de executie al functiei {function.__name__} a fost {execution_time}\n")
+        file.close()
+        return result
+
+    return inner
+
+@timing
+def exemplu():
+    for _ in range(10000000):
+        pass
+@timing
+def exemplu2():
+    for _ in range(100000):
+        pass
+@timing
+def exemplu3():
+    for _ in range (999999000):
+        pass
+
+
+exemplu()
+exemplu2()
+exemplu3()
