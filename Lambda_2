@@ -1,0 +1,15 @@
+def calculeaza_suma(numar1, numar2):   # functia are un nume: numele functiei este "calculeaza_suma"
+    return numar1 + numar2
+
+result = calculeaza_suma(numar1=10, numar2=20)
+
+
+assert result == 30
+
+# transformarea functiei "calculeaza_suma" in functie anonima
+
+calculeaza_suma2 = lambda numar1, numar2: numar1+numar2   # am definit o functie anonima
+# variabila "calculeaza_suma2" este egala cu o functie
+# variabila "calculeaza_suma2" poate fi folosita ca orice functie
+
+print(calculeaza_suma2(numar1=10, numar2=20))
