@@ -1,0 +1,91 @@
+# Codul claselor Membru, Sarcina și Proiect (presupunem că acestea sunt deja definite mai sus)
+from Proiect_Final_V4 import Proiect, Membru, Sarcina
+
+def adauga_membru_proiect(proiect):
+    try:
+        id_membru = int(input("Introduceți ID-ul membrului: "))
+        nume = input("Introduceți numele membrului: ")
+        rol = input("Introduceți rolul membrului: ")
+        rata_orara = float(input("Introduceți rata orară a membrului: "))
+
+        membru = Membru(id_membru, nume, rol, rata_orara)
+        print(proiect.adauga_membru(membru))
+    except ValueError:
+        print("Input invalid. Vă rugăm să introduceți valori corespunzătoare.")
+
+
+def adauga_sarcina_proiect(proiect):
+    try:
+        id_sarcina = int(input("Introduceți ID-ul sarcinii: "))
+        descriere = input("Introduceți descrierea sarcinii: ")
+        estimare_ore = float(input("Introduceți estimarea în ore: "))
+        id_membru_asignat = int(input("Introduceți ID-ul membrului asignat: "))
+
+        sarcina = Sarcina(id_sarcina, descriere, estimare_ore, id_membru_asignat)
+        print(proiect.adauga_sarcina(sarcina))
+    except ValueError:
+        print("Input invalid. Vă rugăm să introduceți valori corespunzătoare.")
+
+
+def sterge_membru_proiect(proiect):
+    try:
+        id_membru = int(input("Introduceți ID-ul membrului de șters: "))
+        print(proiect.sterge_membru(id_membru))
+    except ValueError:
+        print("ID-ul membrului trebuie să fie un număr întreg.")
+
+
+def sterge_sarcina_proiect(proiect):
+    try:
+        id_sarcina = int(input("Introduceți ID-ul sarcinii de șters: "))
+        print(proiect.sterge_sarcina(id_sarcina))
+    except ValueError:
+        print("ID-ul sarcinii trebuie să fie un număr întreg.")
+
+
+def afiseaza_detalii_proiect(proiect):
+    print("\nDetalii proiect:")
+    print(proiect.afiseaza_date())
+    print("\nMembrii proiectului:")
+    print(proiect.afiseaza_membri())
+
+
+def main():
+    nume_proiect = input("Introduceți numele proiectului: ")
+    try:
+        buget = float(input("Introduceți bugetul proiectului: "))
+        proiect = Proiect(nume_proiect, buget)
+    except ValueError:
+        print("Bugetul trebuie să fie un număr valid.")
+        return
+
+    while True:
+        print("\n=== Meniu Proiect ===")
+        print("1. Adăugați un membru")
+        print("2. Adăugați o sarcină")
+        print("3. Ștergeți un membru")
+        print("4. Ștergeți o sarcină")
+        print("5. Afișați detalii proiect")
+        print("6. Ieșiți")
+
+        optiune = input("Selectați o opțiune: ")
+
+        if optiune == "1":
+            adauga_membru_proiect(proiect)
+        elif optiune == "2":
+            adauga_sarcina_proiect(proiect)
+        elif optiune == "3":
+            sterge_membru_proiect(proiect)
+        elif optiune == "4":
+            sterge_sarcina_proiect(proiect)
+        elif optiune == "5":
+            afiseaza_detalii_proiect(proiect)
+        elif optiune == "6":
+            print("Ieșire din aplicație.")
+            break
+        else:
+            print("Opțiune invalidă. Vă rugăm să alegeți din nou.")
+
+
+if __name__ == "__main__":
+    main()
