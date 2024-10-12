@@ -1,0 +1,8 @@
+file = open("Luceafarul.txt", "w")  # se creeaza automat fisierul cu extensia respectiva
+# EOL = End Of Line (\n)
+lines = ["A fost odata ca-n povesti\nA fost ca niciodata\nDin rude mari imparatesti\nO preafrumoasa fata"]
+
+file.writelines(lines)
+
+
+file.close()
