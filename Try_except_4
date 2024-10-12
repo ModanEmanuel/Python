@@ -1,0 +1,18 @@
+def division(number1, number2):
+    try:
+        # se pun liniile de cod care ar putea sa produca o eroare
+        return number1/number2
+    except ZeroDivisionError:
+        return "Impartirea la zero nu este posibila. Incearca alte numere !"
+    except ArithmeticError:
+        return "An error"
+    except TypeError:
+        return "Impartirea se poate face face doar cu numere"
+    except Exception:
+        return "Error"
+print(division(number1=10, number2=2))      #5.0
+print(division(number1=25, number2=5))      #5.0
+print(division(number1=0, number2=5))       #0
+print(division(number1=25, number2=0))       # eroare
+print(division(number1=0, number2=0))      # eroare
+print(division(number1="1", number2="10"))       # eroare
