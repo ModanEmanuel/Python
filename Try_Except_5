@@ -1,0 +1,32 @@
+def este_numar_intreg(value):
+    try:
+        int(value)
+        result = True
+    except ValueError:
+        return False
+    return result
+
+print(este_numar_intreg("2"))       # 2
+print(este_numar_intreg("doi"))     # False
+
+# a doua solutie
+def este_numar_intreg2(value):
+    try:
+        int(value)
+    except ValueError:
+        return "eroare"
+    else:
+        # blocul de cod din else se executa doar daca nu a aparut nicio eroare
+        return True
+    finally:
+        # blocul de cod care se executa tot timpul
+        print("Finish")
+
+# nu putem sa folosim return si in else si in finally
+# nu putem sa folosim return si in finally si in except
+
+print(este_numar_intreg("2"))       # True
+print(este_numar_intreg("doi"))     # False
+
+print(este_numar_intreg("2"))       # True
+print(este_numar_intreg("doi"))     # False
