@@ -1,0 +1,16 @@
+def bark(dog_name, dog_weight):     # header
+    # dog_name, dog_weight sunt variabile locale
+
+    if dog_weight > 20:
+        return f"{dog_name} says WOOF WOOF"
+    else:
+        return f"{dog_name} says woof woof"
+
+print(bark(dog_name="Codie", dog_weight=40)) # keywords arguments
+print(bark(dog_name="Sparky", dog_weight=9))
+print(bark(dog_name="Jackson", dog_weight=12))
+print(bark(dog_name="Fido", dog_weight=65))
+
+print(bark(dog_weight=20, dog_name="Lord"))
+
+print(bark("Rex", 13)) # positional arguments
