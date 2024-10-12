@@ -1,0 +1,19 @@
+class Adress:
+    def __init__(self, city, street):
+        self.city = city
+        self.street = street
+
+class Person:
+    def __init__(self, name, address):
+        self.name = name
+        self.address = address
+
+address = Adress(city="Bucuresti", street="Calea Victoriei")
+persoana1 = Person(name="Ion Popescu", address=address)
+persoana2 = Person(name="Maria Marin", address=address)
+
+print(persoana1.address.city)
+print(persoana1.address.street)
+
+print(persoana2.address.city)
+print(persoana2.address.street)
