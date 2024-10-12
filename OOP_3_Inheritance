@@ -1,0 +1,16 @@
+class Animal:
+    def __init__(self, nume):
+        self.nume = nume
+
+class Caine(Animal):
+    def __init__(self, nume, rasa):
+        #Animal.__init__(self,nume)
+        super().__init__(nume)
+        self.rasa = rasa
+
+animal = Animal(nume="Ricky")
+caine = Caine(nume="Rex", rasa="Labrador")
+
+
+assert issubclass(Caine, Animal) == True
+assert issubclass(Animal, Caine) == False
