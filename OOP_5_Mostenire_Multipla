@@ -1,0 +1,32 @@
+class Animal:   # clasa de baza, super clasa
+    def __init__(self, nume):
+        self.nume = nume
+
+    def eat(self, food):
+        return f"{self.nume} mananca {food}"
+
+class Pet:
+    def __init__(self, stapan):
+        self.stapan = stapan
+
+    def play(self):
+        return "Playing..."
+
+class Dog(Animal, Pet):
+
+    def __init__(self, nume, stapan, toy):
+        # in cazul mostenirii multiple, "super()" nu functioneaza pentru extinderea constructorului (init)
+        # se foloseste denumirea super-claselor cand apelam constructorul
+        Animal.__init__(self, nume)
+        Pet.__init__(self, stapan)
+        self.toy = toy
+
+
+    def bark(self):
+        return f"{self.nume} spune HAM-HAM"
+
+dog = Dog(nume="Rex", stapan="Ion Marin", toy="o minge")
+print(dog.nume, dog.stapan, dog.toy)
+print(dog.bark())
+print(dog.play())
+print(dog.eat("carne"))
