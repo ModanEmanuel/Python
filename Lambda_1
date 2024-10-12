@@ -1,0 +1,21 @@
+def este_numar_par(numar):
+    return "Numar par" if numar % 2 == 0 else "Numar impar"
+
+
+assert este_numar_par(4) == "Numar par"
+assert este_numar_par(9) == "Numar impar"
+
+
+key = lambda numar: "Numar par" if numar % 2 == 0 else "Numar impar"
+
+# sintaxa :
+# lambda - parametrul1, parametrul2 etc - ce returneaza functia (fara cuvantul return)
+
+if numar % 3 == 0 and numar % 5 == 0:
+    result = "numar divizibil cu 3 si 5"
+elif numar % == 0:
+    result = "numar divizibil cu 3"
+elif numar % 5:
+    result = "numar divizibil cu 5"
+
+number = "numar divizibil cu 3 si 5" if numar % 3 == 0 and numar % 5 == 0 else "numar divizibil cu 3" if numar % 3 else "numar divizibil cu 5"
