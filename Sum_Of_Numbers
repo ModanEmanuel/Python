@@ -1,0 +1,8 @@
+def suma_cifre(numar=0):
+    suma = 0
+    for cifra in str(numar):
+        suma = suma + int(cifra)
+    return suma
+
+print(suma_cifre(12345))
+print(suma_cifre())
