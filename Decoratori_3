@@ -1,0 +1,39 @@
+def log_action(function):
+    def inner(*args, **kwargs):
+        argumente = ""
+        for arg in args:
+            argumente += f"{arg}, "
+
+        for key, value in kwargs.items():
+            argumente += f"{key}={value}, "
+        log = f"Functia {function.__name__} a fost apelata cu {argumente}\n"
+
+        file = open("log_action.txt", "a")
+        file.write(log)
+        file.close()
+        result = function(*args, **kwargs)
+        return result
+    return inner
+
+@log_action
+def adunare(numar1, numar2):
+    return numar1 + numar2
+
+@log_action
+def scadere(numar1, numar2):
+    return numar1 - numar2
+
+@log_action
+def inmultire(numar1, numar2):
+    return numar1 * numar2
+
+@log_action
+def impartire(numar1,numar2):
+    return numar1 / numar2
+
+
+if __name__ == "__main__":
+    assert adunare(5, 6) == 11  # **args
+    assert inmultire(10, 5) == 50
+    assert scadere(numar1=10, numar2=5) == 5    #**kwargs
+    assert impartire(numar1=3, numar2=2) == 1.5
