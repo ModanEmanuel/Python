@@ -1,0 +1,33 @@
+class File:
+    def __init__(self, nume_fisier):
+        self.nume_fisier = nume_fisier
+    def open_file(self):
+        raise NotImplementedError("Metoda open_file trebuie implementata in sub-clasa")
+
+class PDF(File):
+    def open_file(self):
+        return f"Fisierul PDF {self.nume_fisier} are continutul ..."
+
+class Word(File):
+    def open_file(self):
+        return f"Fisierul word {self.nume_fisier} are continutul ..."
+
+class Excel(File):
+    def open_file(self):
+        return f"Fisierul excel {self.nume_fisier} are continutul ..."
+
+class PPT(File):
+    pass
+    # def open_file(self):
+    #     return f"Fisierul power point {self.nume_fisier} are continutul ..."
+
+pdf = PDF("titlu.pdf")
+word = Word("compunere.doc")
+excel = Excel("cheltuieli.xlsx")
+ppt = PPT("prezentare.xlsx")
+
+documents = [pdf, word, excel, ppt]
+
+# interfata pentru obiecte diferite
+for document in documents:
+    print(document.open_file())
