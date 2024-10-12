@@ -1,0 +1,18 @@
+def square(number):
+    if number < 0:
+        raise ArithmeticError("Nu se poate determina radicalul dintr-un numar negativ")
+    return number ** 0.5
+
+
+
+# utilizarea functiei la utilizator
+try:
+    print(square(9))    # 3.0
+    print(square(25))    # 5.0
+    print(square(16))    # 4.0
+    print(square(0))    # 0.0
+    print(square(1))    # 1.0
+    print("___________________")
+    print(square(-9))    #
+except ArithmeticError:
+    print("Nu se poate determina radicalul dintr-un numar negativ !")
