@@ -1,0 +1,41 @@
+def read_file(file_name):
+    file = open(file_name, "r")
+    lines = file.readlines()    # textul va fi intr-o lista, unde fiecare linie este un element al listei
+    file.close()
+    return lines
+
+
+def write_lines(file_name, text):
+    file = open(file_name, "w") #TODO w sau a ?
+    file.write(text)
+
+
+    file.close()
+
+def process_text(lines):
+    text = ""
+    words_to_replace = ["VERB_ING", "NOUN", "NOUN,", "ADJECTIVE"]
+    for line in lines:
+        for word_to_replace in words_to_replace:
+            new_line = process_line(word_to_replace, line)
+
+        text += new_line
+        return text
+
+def process_line(word_to_replace, line):
+    if word_to_replace in line:
+        word = input(f"Spune-mi un cuvant pentru {word_to_replace}")
+        line = line.replace(word_to_replace, word)
+    return line
+
+
+
+
+def main():
+    lines = read_file(file_name="lib.txt")
+    text = process_text(lines)
+    write_lines("text.txt", text)
+
+
+if __name__ == "__main__":
+    main()
