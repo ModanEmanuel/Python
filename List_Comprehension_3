@@ -1,0 +1,26 @@
+numbers = [10, 5, 20, 100, 45, 78, -90, -2, -170]
+
+new = []
+for number in numbers:
+    if number % 2 == 2:
+        new.append(number ** 2)
+    else:
+        new.append(number ** 3)
+
+print(new, "new")
+result  = [number ** 2 if number % 2 == 2 else number ** 3 for number in numbers]
+print(result, "result")
+
+nr_telefon = ["092352236", "07234235", "0822352", "076357624", "072352351"]
+
+result = []
+for nr in nr_telefon:
+    # if nr[0:2] == "07":
+    if nr.startswith("07"):
+        result.append("Numar valid")
+    else:
+        result.append("Numar invalid")
+print(result)
+
+new = ["Numar valid" if nr.startswith("07") else "Numar invalid" for nr in nr_telefon]
+print(new, "new")
